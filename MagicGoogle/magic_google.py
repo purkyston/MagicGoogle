@@ -129,7 +129,7 @@ class MagicGoogle():
         """
         return pq(content)
 
-    def get_url_from_query(self, query, language='en', num=None, start=0)
+    def get_url_from_query(self, query, language='en', num=None, start=0):
         """
         Get Url from query
         :param query: Keyword
