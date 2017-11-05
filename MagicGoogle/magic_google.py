@@ -129,6 +129,24 @@ class MagicGoogle():
         """
         return pq(content)
 
+    def get_url_from_query(self, query, language='en', num=None, start=0)
+        """
+        Get Url from query
+        :param query: Keyword
+        :param language: Language
+        :return: url
+        """
+        domain = self.get_random_domain()
+        if num is None:
+            url = URL_SEARCH
+            url = url.format(
+                domain=domain, language=language, query=quote_plus(query))
+        else:
+            url = URL_NUM
+            url = url.format(
+                domain=domain, language=language, query=quote_plus(query), num=num)
+        return url
+
     def get_random_user_agent(self):
         """
         Get a random user agent string.
