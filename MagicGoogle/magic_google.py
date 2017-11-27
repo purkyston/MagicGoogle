@@ -188,3 +188,33 @@ class MagicGoogle():
         except:
             data = [default]
         return data
+
+    def get(self, url, pause=2):
+        """
+        requests get
+        url: 
+        :return: result
+        """
+        time.sleep(pause)
+        #domain = self.get_random_domain()
+        # Add headers
+        headers = {'user-agent': self.get_random_user_agent()}
+        headers['X-ProxyMesh-Timeout'] = '100'
+        # headers['X-ProxyMesh-Country'] = domain[domain.rfind('.') + 1:].upper()
+        headers['X-ProxyMesh-Country'] = 'US'
+
+        try:
+            requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
+            r = requests.get(url=url,
+                             proxies=self.proxies,
+                             headers=headers,
+                             allow_redirects=False,
+                             verify=False,
+                             timeout=30)
+            LOGGER.info(url)
+            charset = chardet.detect(r.content)
+            content = r.content.decode(charset['encoding'])
+            return content
+        except Exception as e:
+            LOGGER.exception(e)
+            return None
