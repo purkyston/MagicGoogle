@@ -13,7 +13,6 @@ else:
     from urllib import quote_plus
     from urlparse import urlparse, parse_qs
 
-
 class MagicGoogle():
     """
     Magic google search.
@@ -52,7 +51,8 @@ class MagicGoogle():
         :return: result
         """
         time.sleep(pause)
-        domain = self.get_random_domain()
+        #domain = self.get_random_domain()
+        domain = 'www.google.com'
         if num is None:
             url = URL_SEARCH
             url = url.format(
@@ -63,6 +63,10 @@ class MagicGoogle():
                 domain=domain, language=language, query=quote_plus(query), num=num)
         # Add headers
         headers = {'user-agent': self.get_random_user_agent()}
+        headers['X-ProxyMesh-Timeout'] = '100'
+        # headers['X-ProxyMesh-Country'] = domain[domain.rfind('.') + 1:].upper()
+        headers['X-ProxyMesh-Country'] = 'US'
+
         try:
             requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
             r = requests.get(url=url,
@@ -159,7 +163,10 @@ class MagicGoogle():
         Get a random domain.
         :return: Random user agent string.
         """
-        domain = random.choice(self.get_data('all_domain.txt', DOMAIN))
+        domain = self.get_data('all_domain.txt', DOMAIN)
+        domain_filter = self.get_data('domain_filter.txt')
+        domain = [ d for d in domain if d[d.rfind('.') + 1 :].upper() in domain_filter]
+        domain = random.choice(domain)
         if domain in BLACK_DOMAIN:
             self.get_random_domain()
         else:
